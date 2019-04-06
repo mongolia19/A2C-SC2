@@ -19,7 +19,7 @@ RENDER = False  # rendering wastes time
 GAMMA = 0.9     # reward discount in TD error
 LR_A = 5e-4   # learning rate for actor
 LR_C = 10e-4     # learning rate for critic
-map_name = "MoveToBeacon"
+map_name = "CollectMineralShards"
 step_mul = 8
 resolution = MAP_LEN
 visualize = True
@@ -109,7 +109,7 @@ def calculate_enemy_distance_distribution(self_x, self_y, enemy_x_list, enemy_y_
     return total_vector[0][0]
 
 def distance_reward(distance_2_target_obs, last_distance_2_target_obs):
-    if max(distance_2_target_obs)> max(last_distance_2_target_obs):
+    if max(distance_2_target_obs[0])> max(last_distance_2_target_obs[0]):
         return 0.01
     else:
         return -0.01
@@ -318,9 +318,9 @@ for i_episode in range(MAX_EPISODE):
         s_ = obsProcesser.process(s_)
         self_pos, s_ = prepro_sc(s_)
         dis_r = distance_reward(s_, s)
-        r = r + dis_r
+        # r = r + dis_r
         if done:
-            r = -1
+            r = -0
         track_r.append(r)
         td_error = critic.learn(s, r, s_)  # gradient = grad[r + gamma * V(s_) - V(s)]
         actor.learn(s, a, td_error)     # true_gradient = grad[logPi(s,a) * td_error]
