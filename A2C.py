@@ -20,6 +20,7 @@ GAMMA = 0.9     # reward discount in TD error
 LR_A = 5e-4   # learning rate for actor
 LR_C = 10e-4     # learning rate for critic
 map_name = "CollectMineralShards"
+map_name = "MoveToBeacon"
 step_mul = 8
 resolution = MAP_LEN
 visualize = True
@@ -318,7 +319,7 @@ for i_episode in range(MAX_EPISODE):
         s_ = obsProcesser.process(s_)
         self_pos, s_ = prepro_sc(s_)
         dis_r = distance_reward(s_, s)
-        # r = r + dis_r
+        r = r + dis_r
         if done:
             r = -0
         track_r.append(r)
